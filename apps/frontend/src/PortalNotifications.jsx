@@ -14,7 +14,7 @@ export default function PortalNotifications({notices,onRead,onNavigate}){
   const unread=notices.filter(noticeUnread).length;
   async function read(item,open=false){
     if(busy)return;setBusy(item.id);setError('');
-    try{if(noticeUnread(item))await onRead(item.id);if(open)onNavigate('case',destination(item).tab);}
+    try{const current=noticeUnread(item)?await onRead(item.id):true;if(open&&current!==false)onNavigate('case',destination(item).tab);}
     catch(problem){setError(problem.message);}
     finally{setBusy('');}
   }
